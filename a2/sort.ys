@@ -1,0 +1,90 @@
+.pos 0x100
+main:
+	irmovq	stackend, %rsp	# initialize stack pointer to stackend
+	irmovq	array, %rdi		# rdi = A = base
+	irmovq	arraysize, %rsi	# rsi = &len
+	mrmovq	(%rsi), %rsi	# rsi = len
+	call	quickSort		# quickSort(A, len)
+	halt
+
+.pos 0x200
+quickSort:
+	pushq	%r12			# allocate space for r12
+	pushq	%rbp			# allocate space for rbp
+	pushq	%rbx			# allocate space for rbx
+	rrmovq	%rsi, %rbp		# rbp = rsi = len
+	irmovq	$1, %r9			# r9 = 1
+	subq	%rsi, %r9		# r9 = 1-len
+	jge	.L1					# if (len <= 1), go to L1
+	irmovq	$8, %r9			# r9 = 8 (size of elements)
+	rrmovq	%rsi, %rcx		# rcx = len
+	mulq	%r9, %rcx		# rcx = len * 8
+	subq	%r9, %rcx		# rcx = (len * 8) - 8
+	addq	%rdi, %rcx		# rcx = (len * 8) - 8 + A
+	mrmovq	(%rcx), %r8		# r8 = memory in last position of the array
+	rrmovq	%rdi, %r9		# r9 = rdi = A
+	subq	%rcx, %r9		# r9 = A - high
+	jle	.L6					# if (j < high) continue, else go to L6
+	rrmovq	%rdi, %rbx		# rbx = rdi = A
+.L3:	mrmovq	(%rcx), %rax	# memory read at rcx: rax = high
+	mrmovq	(%rbx), %rdx	# memory read at rbx: rdx = j
+	rmmovq	%rdx, (%rcx)	# memory write from rdx: rcx = j
+	rmmovq	%rax, (%rbx)	# memory write from rax: rbx = i
+	rrmovq	%rbx, %r12		# r12 = rbx = i
+	subq	%rdi, %r12		# r12 = i - A
+	irmovq	$8, %r9			# r9 = 8
+	divq	%r9, %r12		# r12 = (i - A) / 8
+	rrmovq	%r12, %rsi		# rsi = r12 = (i - A) / 8
+	call	quickSort		# quickSort(A, i - A)
+	subq	%r12, %rbp		# rbp = rbp-r12 = len - (i - A)
+	rrmovq	%rbp, %rsi		# rsi = rbp = len - (i - A)
+	irmovq	$1, %r9			# r9 = 1
+	subq	%r9, %rsi		# rsi = len - (i - A) - 1
+	irmovq	$8, %r9			# r9 = 8
+	rrmovq	%rbx, %rdi		# rdi = i
+	addq	%r9, %rdi		# rdi = i + 1
+	call	quickSort		# quickSort(i + 1, len - (i - A) - 1)
+        jmp     .L1			# go to L1
+.L6:	rrmovq	%rdi, %rax	# rax = rdi = A ==> rax=i, caller-saved register
+	rrmovq	%rdi, %rbx		# rax = rdi = A ==> rbx=j
+.L5:	mrmovq	(%rax), %rdx	# memory read at rax: rdx = A ==> pivot = A
+	rrmovq	%r8, %r9		# r9 = r8 ==> j is r9
+	subq	%rdx, %r9		# r9 = r9-rdx = j - pivot
+	jl	.L4					# if (pivot<j), go to L4
+	mrmovq	(%rbx), %rsi	# rsi = memory at rbx ==> *t=*j
+	rmmovq	%rsi, (%rax)	# memory at rax = rsi ==> *j=*i
+	rmmovq	%rdx, (%rbx)	# memory at rbx = rdx ==> *i=t
+	irmovq	$8, %r9			# r9 = 8
+	addq	%r9, %rbx		# rbx = i+8 ==> i++
+.L4:	irmovq	$8, %r9		# r9 = 8
+	addq	%r9, %rax		# rax = j+8 ==> j++
+	rrmovq	%rcx, %r9		# r9 = rcx ==> rcx = high
+	subq	%rax, %r9		# r9 = r9-rax = high - j
+	jle	.L3					# if (high<=j), go to L3
+	jmp	.L5					# go to L5
+.L1:	popq	%rbx		# deallocate space for rbx
+	popq	%rbp			# deallocate space for rbp
+	popq	%r12			# deallocate space for r12
+	ret						# return
+
+.pos 0x2000
+array:	.quad 0x00000007
+        .quad 0x00000003
+        .quad 0x00000004
+        .quad 0x0000000a
+        .quad 0x00000005
+        .quad 0x00000008
+        .quad 0x00000009
+        .quad 0x00000001
+        .quad 0x00000002
+        .quad 0x00000006
+
+.pos 0x2500
+arraysize: .quad 10
+
+.pos 0x3000
+stack:	.quad 0x0,200
+stackend:
+	.quad 0x0
+
+

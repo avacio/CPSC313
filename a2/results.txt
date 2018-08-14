@@ -1,0 +1,690 @@
+
+========================
+PART 2
+========================
+1. GIVEN ARRAY
+array:	.quad 0x00000007
+        .quad 0x00000003
+        .quad 0x00000004
+        .quad 0x0000000a
+        .quad 0x00000005
+        .quad 0x00000008
+        .quad 0x00000009
+        .quad 0x00000001
+        .quad 0x00000002
+        .quad 0x00000006
+
+Sequential implementation:
+507 cycles
+507 retired instructions
+
+PIPE with stalling:
+1301 cycles
+507 retired instructions
+
+PIPE with data forwarding:
+666 cycles
+507 retired instructions
+
+PIPE with data forwarding and branch prediction:
+628 cycles
+507 retired instructions
+
+2.
+array:	.quad 0xDEADBEEF
+        .quad 0x00000008
+
+Sequential implementation:
+78 cycles
+78 retired instructions
+
+PIPE with stalling:
+216 cycles
+78 retired instructions
+
+PIPE with data forwarding:
+104 cycles
+78 retired instructions
+
+PIPE with data forwarding and branch prediction:
+100 cycles
+78 retired instructions
+
+3.
+array:
+(empty)
+
+Sequential implementation:
+17 cycles
+17 retired instructions
+
+PIPE with stalling:
+50 cycles
+17 retired instructions
+
+PIPE with data forwarding:
+26 cycles
+17 retired instructions
+
+PIPE with data forwarding and branch prediction:
+26 cycles
+17 retired instructions
+
+4.
+array:	.quad 0x08408408
+        .quad 0x08408408
+        .quad 0x28428428
+        .quad 0x08408408
+        .quad 0x08408408
+        .quad 0x28428428
+
+Sequential implementation:
+396 cycles
+396 retired instructions
+
+PIPE with stalling:
+1019 cycles
+396 retired instructions
+
+PIPE with data forwarding:
+516 cycles
+396 retired instructions
+
+PIPE with data forwarding and branch prediction:
+478 cycles
+396 retired instructions
+
+5. increasing order
+array:	.quad 0x00000111
+        .quad 0x00000222
+        .quad 0x00003333
+        .quad 0x00004444
+        .quad 0x00055555
+        .quad 0x00066666
+        .quad 0x00077777
+        .quad 0x00888888
+        .quad 0x00999999
+        .quad 0x00AAAAAA
+        .quad 0x00BBBBBB
+        .quad 0x0CCCCCCC
+
+Sequential implementation:
+1568 cycles
+1568 retired instructions
+
+PIPE with stalling:
+3867 cycles
+1568 retired instructions
+
+PIPE with data forwarding:
+2050 cycles
+1568 retired instructions
+
+PIPE with data forwarding and branch prediction:
+1874 cycles
+1568 retired instructions
+
+6. decreasing order
+array:	.quad 0x0CCCCCCC
+        .quad 0x00BBBBBB
+        .quad 0x00AAAAAA
+        .quad 0x00999999
+        .quad 0x00888888
+        .quad 0x00077777
+        .quad 0x00066666
+        .quad 0x00055555
+        .quad 0x00004444
+        .quad 0x00003333
+        .quad 0x00000222
+        .quad 0x00000111
+
+Sequential implementation:
+1388 cycles
+1388 retired instructions
+
+PIPE with stalling:
+3471 cycles
+1388 retired instructions
+
+PIPE with data forwarding:
+1834 cycles
+1388 retired instructions
+
+PIPE with data forwarding and branch prediction:
+1730 cycles
+1388 retired instructions
+
+7. random order
+array:	.quad 0x00AAAAAA
+        .quad 0x00999999
+        .quad 0x00000111
+        .quad 0x00BBBBBB
+        .quad 0x00003333
+        .quad 0x00004444
+        .quad 0x00888888
+        .quad 0x00055555
+        .quad 0x0CCCCCCC
+        .quad 0x00077777
+        .quad 0x00000222
+        .quad 0x00066666
+
+Sequential implementation:
+750 cycles
+750 retired instructions
+
+PIPE with stalling:
+1936 cycles
+750 retired instructions
+
+PIPE with data forwarding:
+982 cycles
+750 retired instructions
+
+PIPE with data forwarding and branch prediction:
+928 cycles
+750 retired instructions
+
+8. large array size (15)
+array:	.quad 0x00000040
+        .quad 0x000000AA
+        .quad 0x00000111
+        .quad 0x0000670B
+        .quad 0x00003143
+        .quad 0x00000600
+        .quad 0x00000717
+        .quad 0x00FE5000
+        .quad 0x0000BEF1
+        .quad 0x00000000
+        .quad 0x00000001
+        .quad 0x00170000
+        .quad 0x00BD9000
+        .quad 0x00000080
+        .quad 0x000000A0
+
+Sequential implementation:
+1037 cycles
+1037 retired instructions
+
+PIPE with stalling:
+2644 cycles
+1037 retired instructions
+
+PIPE with data forwarding:
+1362 cycles
+1037 retired instructions
+
+PIPE with data forwarding and branch prediction:
+1286 cycles
+1037 retired instructions
+
+9.
+array:  .quad 0x00000000
+
+Sequential implementation:
+17 cycles
+17 retired instructions
+
+PIPE with stalling:
+50 cycles
+17 retired instructions
+
+PIPE with data forwarding:
+26 cycles
+17 retired instructions
+
+PIPE with data forwarding and branch prediction:
+26 cycles
+17 retired instructions
+
+10.
+array:	.quad 0x00000000
+        .quad 0x00000000
+        .quad 0x00000000
+
+Sequential implementation:
+164 cycles
+164 retired instructions
+
+PIPE with stalling:
+438 cycles
+164 retired instructions
+
+PIPE with data forwarding:
+214 cycles
+164 retired instructions
+
+PIPE with data forwarding and branch prediction:
+200 cycles
+164 retired instructions
+
+11.
+array:	.quad 0xFFFFFFFF
+        .quad 0xFFFFFFFF
+        .quad 0xFFFFFFFF
+        .quad 0xFFFFFFFF
+
+Sequential implementation:
+260 cycles
+260 retired instructions
+
+PIPE with stalling:
+683 cycles
+260 retired instructions
+
+PIPE with data forwarding:
+338 cycles
+260 retired instructions
+
+PIPE with data forwarding and branch prediction:
+314 cycles
+260 retired instructions
+
+
+========================
+PART 3
+========================
+// sort_reorder.ys
+========================
+
+========
+ARRAY 1:
+Sequential implementation:
+472 cycles
+472 retired instructions
+
+PIPE with stalling:
+1032 cycles
+472 retired instructions
+== 20.7% faster than original
+
+PIPE with data forwarding:
+607 cycles
+472 retired instructions
+
+PIPE with data forwarding and branch prediction:
+551 cycles
+472 retired instructions
+
+========
+ARRAY 2:
+Sequential implementation:
+57 cycles
+57 retired instructions
+
+PIPE with stalling:
+125 cycles
+57 retired instructions
+
+PIPE with data forwarding:
+80 cycles
+57 retired instructions
+
+PIPE with data forwarding and branch prediction:
+78 cycles
+57 retired instructions
+
+========
+ARRAY 3:
+Sequential implementation:
+16 cycles
+16 retired instructions
+
+PIPE with stalling:
+42 cycles
+16 retired instructions
+
+PIPE with data forwarding:
+25 cycles
+16 retired instructions
+
+PIPE with data forwarding and branch prediction:
+25 cycles
+16 retired instructions
+
+========
+ARRAY 4:
+Sequential implementation:
+364 cycles
+364 retired instructions
+
+PIPE with stalling:
+789 cycles
+364 retired instructions
+
+PIPE with data forwarding:
+461 cycles
+364 retired instructions
+
+PIPE with data forwarding and branch prediction:
+415 cycles
+364 retired instructions
+
+========
+ARRAY 5:
+Sequential implementation:
+1446 cycles
+1446 retired instructions
+
+PIPE with stalling:
+2935 cycles
+1446 retired instructions
+
+PIPE with data forwarding:
+1829 cycles
+1446 retired instructions
+
+PIPE with data forwarding and branch prediction:
+1565 cycles
+1446 retired instructions
+
+========
+ARRAY 6:
+Sequential implementation:
+1302 cycles
+1302 retired instructions
+
+PIPE with stalling:
+2755 cycles
+1302 retired instructions
+
+PIPE with data forwarding:
+1685 cycles
+1302 retired instructions
+
+PIPE with data forwarding and branch prediction:
+1493 cycles
+1302 retired instructions
+
+========
+ARRAY 7:
+Sequential implementation:
+698 cycles
+698 retired instructions
+
+PIPE with stalling:
+1541 cycles
+698 retired instructions
+
+PIPE with data forwarding:
+895 cycles
+698 retired instructions
+
+PIPE with data forwarding and branch prediction:
+819 cycles
+698 retired instructions
+
+========
+ARRAY 8:
+Sequential implementation:
+968 cycles
+968 retired instructions
+
+PIPE with stalling:
+2102 cycles
+968 retired instructions
+
+PIPE with data forwarding:
+1245 cycles
+968 retired instructions
+
+PIPE with data forwarding and branch prediction:
+1125 cycles
+968 retired instructions
+
+========
+ARRAY 9:
+Sequential implementation:
+16 cycles
+16 retired instructions
+
+PIPE with stalling:
+42 cycles
+16 retired instructions
+
+PIPE with data forwarding:
+25 cycles
+16 retired instructions
+
+PIPE with data forwarding and branch prediction:
+25 cycles
+16 retired instructions
+
+========
+ARRAY 10:
+Sequential implementation:
+150 cycles
+150 retired instructions
+
+PIPE with stalling:
+343 cycles
+150 retired instructions
+
+PIPE with data forwarding:
+191 cycles
+150 retired instructions
+
+PIPE with data forwarding and branch prediction:
+179 cycles
+150 retired instructions
+
+========
+ARRAY 11:
+Sequential implementation:
+238 cycles
+238 retired instructions
+
+PIPE with stalling:
+531 cycles
+238 retired instructions
+
+PIPE with data forwarding:
+301 cycles
+238 retired instructions
+
+PIPE with data forwarding and branch prediction:
+277 cycles
+238 retired instructions
+
+========================
+// sort_optimal.ys
+========================
+
+========
+ARRAY 1:
+Sequential implementation:
+385 cycles
+385 retired instructions
+
+PIPE with stalling:
+822 cycles
+385 retired instructions
+== 36.8% faster than original
+
+PIPE with data forwarding:
+520 cycles
+385 retired instructions
+
+PIPE with data forwarding and branch prediction:
+464 cycles
+385 retired instructions
+== 15.5% faster than original
+
+========
+ARRAY 2:
+Sequential implementation:
+72 cycles
+72 retired instructions
+
+PIPE with stalling:
+175 cycles
+72 retired instructions
+
+PIPE with data forwarding:
+95 cycles
+72 retired instructions
+
+PIPE with data forwarding and branch prediction:
+93 cycles
+72 retired instructions
+
+========
+ARRAY 3:
+Sequential implementation:
+12 cycles
+12 retired instructions
+
+PIPE with stalling:
+25 cycles
+12 retired instructions
+
+PIPE with data forwarding:
+21 cycles
+12 retired instructions
+
+PIPE with data forwarding and branch prediction:
+21 cycles
+12 retired instructions
+
+========
+ARRAY 4:
+Sequential implementation:
+300 cycles
+300 retired instructions
+
+PIPE with stalling:
+624 cycles
+300 retired instructions
+
+PIPE with data forwarding:
+397 cycles
+300 retired instructions
+
+PIPE with data forwarding and branch prediction:
+351 cycles
+300 retired instructions
+
+========
+ARRAY 5:
+Sequential implementation:
+1211 cycles
+1211 retired instructions
+
+PIPE with stalling:
+2445 cycles
+1211 retired instructions
+
+PIPE with data forwarding:
+1594 cycles
+1211 retired instructions
+
+PIPE with data forwarding and branch prediction:
+1330 cycles
+1211 retired instructions
+
+========
+ARRAY 6:
+Sequential implementation:
+1067 cycles
+1067 retired instructions
+
+PIPE with stalling:
+2265 cycles
+1067 retired instructions
+
+PIPE with data forwarding:
+1450 cycles
+1067 retired instructions
+
+PIPE with data forwarding and branch prediction:
+1258 cycles
+1067 retired instructions
+
+========
+ARRAY 7:
+Sequential implementation:
+568 cycles
+568 retired instructions
+
+PIPE with stalling:
+1222 cycles
+568 retired instructions
+
+PIPE with data forwarding:
+765 cycles
+568 retired instructions
+
+PIPE with data forwarding and branch prediction:
+689 cycles
+568 retired instructions
+
+========
+ARRAY 8:
+Sequential implementation:
+790 cycles
+790 retired instructions
+
+PIPE with stalling:
+1691 cycles
+790 retired instructions
+
+PIPE with data forwarding:
+1067 cycles
+790 retired instructions
+
+PIPE with data forwarding and branch prediction:
+947 cycles
+790 retired instructions
+
+========
+ARRAY 9:
+Sequential implementation:
+12 cycles
+12 retired instructions
+
+PIPE with stalling:
+25 cycles
+12 retired instructions
+
+PIPE with data forwarding:
+21 cycles
+12 retired instructions
+
+PIPE with data forwarding and branch prediction:
+21 cycles
+12 retired instructions
+
+========
+ARRAY 10:
+Sequential implementation:
+122 cycles
+122 retired instructions
+
+PIPE with stalling:
+258 cycles
+122 retired instructions
+
+PIPE with data forwarding:
+163 cycles
+122 retired instructions
+
+PIPE with data forwarding and branch prediction:
+151 cycles
+122 retired instructions
+
+========
+ARRAY 11:
+Sequential implementation:
+195 cycles
+195 retired instructions
+
+PIPE with stalling:
+409 cycles
+195 retired instructions
+
+PIPE with data forwarding:
+258 cycles
+195 retired instructions
+
+PIPE with data forwarding and branch prediction:
+234 cycles
+195 retired instructions

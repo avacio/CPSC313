@@ -1,0 +1,84 @@
+.pos 0x100
+main:
+	irmovq	arraysize, %rsi	# rsi = &len
+	irmovq	stackend, %rsp	# initialize stack pointer to stackend
+	irmovq	array, %rdi		# rdi = A = base
+	mrmovq	(%rsi), %rsi	# rsi = len
+	irmovq	$8, %r10		# r10 = 8
+	irmovq	$1, %r11		# r11 = 1
+	call	quickSort		# quickSort(A, len)
+
+	halt
+
+.pos 0x200
+quickSort:
+	irmovq	$1, %r9			# r9 = 1
+	subq	%rsi, %r9		# rsi = 1 - (rsi) ==> r9 = 1-len
+	jge		.done			# if (len <= 1), go to done
+	rrmovq	%rsi, %rcx		# rcx = len
+	pushq	%rbp			# allocate space for rbp
+	rrmovq	%rsi, %rbp		# rbp = len
+	mulq	%r10, %rcx		# rcx = len * 8
+	rrmovq	%rdi, %rax		# rax = rdi = A
+	subq	%r10, %rcx		# rcx = (len * 8) - 8
+	addq	%rdi, %rcx		# rcx = (len * 8) - 8 + A
+	pushq	%rbx			# allocate space for rbx
+	rrmovq	%rdi, %rbx		# rbx = rdi = A
+	mrmovq	(%rcx), %r8		# r8 = memory in last position of the array
+
+.L5:
+	mrmovq	(%rax), %rdx	# memory read at rax: rdx = A ==> pivot = A
+	rrmovq	%r8, %r9		# r9 = r8 ==> j is r9
+	subq	%rdx, %r9		# r9 = r9-rdx = j - pivot
+	jl	.L4					# if (pivot<j), go to L4
+	mrmovq	(%rbx), %rsi	# rsi = memory at rbx ==> *t=*j
+	rmmovq	%rdx, (%rbx)	# memory at rax = rsi ==> *j=*i
+	addq	%r10, %rbx		# rbx = i+8 ==> i++
+	rmmovq	%rsi, (%rax)	# memory at rax = rsi ==> *j=*i
+.L4:
+	addq	%r10, %rax		# rax = j+8 ==> j++
+	rrmovq	%rcx, %r9		# r9 = rcx ==> rcx = high
+	subq	%rax, %r9		# r9 = rcx ==> rcx = high
+	jg	.L5					# if (j < high), go to L5
+
+.L3:
+	pushq	%r12			# allocate space for r12
+	mrmovq	(%rcx), %rax	# memory read at rcx: rax = high
+	mrmovq	(%rbx), %rdx	# memory read at rbx: rdx = j
+	rrmovq	%rbx, %r12		# r12 = rbx = i
+	rmmovq	%rax, (%rbx)	# memory write from rax: rbx = i
+	subq	%rdi, %r12		# r12 = i - A
+	rmmovq	%rdx, (%rcx)	# memory write from rdx: rcx = j
+	divq	%r10, %r12		# r12 = (i - A) / 8
+	rrmovq	%r12, %rsi		# rsi = r12 = (i - A) / 8
+	call	quickSort		# quickSort(A, i - A)
+	subq	%r12, %rbp		# rbp = rbp-r12 = len - (i - A)
+	rrmovq	%rbx, %rdi		# rdi = &i
+	rrmovq	%rbp, %rsi		# rsi = rbp = len - (i - A)
+	addq	%r10, %rdi		# rdi = &i + 8
+	subq	%r11, %rsi		# rsi = len - (i - A) - 1
+	call	quickSort		# quickSort(i + 1, len - (i - A) - 1)
+	popq	%r12			# deallocate space for r12
+	popq	%rbx			# deallocate space for rbx
+	popq	%rbp			# deallocate space for rbp
+.done:	ret					# return
+
+.pos 0x2000
+array:	.quad 0x00000007
+        .quad 0x00000003
+        .quad 0x00000004
+        .quad 0x0000000a
+        .quad 0x00000005
+        .quad 0x00000008
+        .quad 0x00000009
+        .quad 0x00000001
+        .quad 0x00000002
+        .quad 0x00000006
+
+.pos 0x2500
+arraysize: .quad 10
+
+.pos 0x3000
+stack:	.quad 0x0,200
+stackend:
+	.quad 0x0
